@@ -10,7 +10,8 @@ IMAGE_HASH="$(cat linuxkit/tools/alpine/hash)"
 # IMAGE_SUFFIX="${IMAGE_HASH##*-}"
 ALPINE_BASE="$IMAGE_ORG/alpine:$IMAGE_HASH"
 
-PACKAGES=( init sysctl dhcpcd getty rngd )
+PACKAGES=( runc )
+# PACKAGES=( init runc containerd ca-certificates sysctl dhcpcd getty rngd )
 
 for pkg in "${PACKAGES[@]}"
 do (
@@ -25,7 +26,7 @@ do (
   # Attempt to "reparent" the image
   cd pkg/"$pkg" &&
   echo "$0: $pkg: reparenting ..."
-  sed -e 's@FROM linuxkit/alpine:.* AS@FROM '"$ALPINE_BASE"' AS@g' -i~ Dockerfile && rm -f Dockerfile~ &&
+  sed -e 's@FROM linuxkit/alpine:.* [Aa][Ss]@FROM '"$ALPINE_BASE"' AS@g' -i~ Dockerfile && rm -f Dockerfile~
   echo "$0: $pkg: reparented"
 
   # Attempt to build and push image
