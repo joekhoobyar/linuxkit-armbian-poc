@@ -23,7 +23,7 @@ steps:
       wget -O $dir/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64 &&
       chmod +x $dir/docker-buildx
     - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
-    - scripts/build-pkgs.sh
+    - DOCKER_HOST=http://dind:2376 scripts/build-pkgs.sh
 ---
 kind: secret
 name: dockerhub_username
