@@ -20,7 +20,7 @@ steps:
     - |-
       mkdir -p ~/.docker/cli-plugins &&
       wget -O docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64 &&
-      chmod +x ~/.docker/cli-plugins/docker-build
+      chmod +x ~/.docker/cli-plugins/docker-buildx
     - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
     - scripts/build-pkgs.sh
 ---
