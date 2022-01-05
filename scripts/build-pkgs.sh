@@ -38,8 +38,9 @@ do (
     --label=org.mobyproject.linuxkit.revision="unknown" \
   )
   network="$(yq .network <build.yml | jq -r .)"
-  [ "$network" == "null" ] && network="none"
-  buildx_args=( "${buildx_args[@]}" --network="$network" )
+  if [ "$network" = "null" ] || [ "$network" = "false" ]; then
+    buildx_args=( "${buildx_args[@]}" --network=none )
+  fi
   moby_config="$(yq .config <build.yml | jq .)"
   if [ "$moby_config" != "null" ]; then
     buildx_args=( "${buildx_args[@]}" --label=org.mobyproject.config="$moby_config" )
