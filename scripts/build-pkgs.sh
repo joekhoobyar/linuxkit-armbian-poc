@@ -30,15 +30,17 @@ do (
   sed -e 's@FROM .*linuxkit[-/]alpine:.* [Aa][Ss]@FROM '"$ALPINE_BASE"' AS@g' -i~ Dockerfile && rm -f Dockerfile~
   echo "$0: $pkg: reparented"
 
-  # Attempt to build configuration
+  # Attempt to configure the build.
   buildx_args=( \
     --platform "$DOCKER_DEFAULT_PLATFORM" \
     -t "$IMAGE_ORG/linuxkit-$pkg:$IMAGE_HASH-$ARCH" \
-    --network=none \
     --label=org.mobyproject.linuxkit.version="unknown" \
     --label=org.mobyproject.linuxkit.revision="unknown" \
   )
-  moby_config="$(yq -o json .config <build.yml | jq .)"
+  network="$(yq .network <build.yml | jq -r .)"
+  [ "$network" == "null" ] && network="none"
+  buildx_args=( "${buildx_args[@]}" --network="$network" )
+  moby_config="$(yq .config <build.yml | jq .)"
   if [ "$moby_config" != "null" ]; then
     buildx_args=( "${buildx_args[@]}" --label=org.mobyproject.config="$moby_config" )
   fi
