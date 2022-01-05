@@ -1,0 +1,12 @@
+diff a/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go b/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
+--- a/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
++++ b/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
+@@ -118,7 +118,7 @@ type Stat_t struct {
+ }
+ 
+ type Statfs_t struct {
+-       Type      int32
++       Type      uint32
+        Bsize     int32
+        Blocks    uint64
+        Bfree     uint64
