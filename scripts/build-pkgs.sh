@@ -35,10 +35,10 @@ do (
     --platform "$DOCKER_DEFAULT_PLATFORM" \
     -t "$IMAGE_ORG/linuxkit-$pkg:$IMAGE_HASH-$ARCH" \
     --network=none \
-    --label=org.mobyproject.linuxkit.version="$(linuxkit version | sed -ne 's/^linuxkit version //p')" \
-    --label=org.mobyproject.linuxkit.revision="$(linuxkit version | sed -ne 's/^commit: //p')" \
+    --label=org.mobyproject.linuxkit.version="unknown" \
+    --label=org.mobyproject.linuxkit.revision="unknown" \
   )
-  moby_config="$(yq -c .config <build.yml)"
+  moby_config="$(yq -o json .config <build.yml | jq .)"
   if [ "$moby_config" != "null" ]; then
     buildx_args=( "${buildx_args[@]}" --label=org.mobyproject.config="$moby_config" )
   fi
