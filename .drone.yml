@@ -7,16 +7,20 @@ clone:
   skip_verify: true
 
 steps:
-  - name: submodules
+  - name: git submodules
     image: alpine/git
     commands:
     - git submodule init
     - git submodule update --recursive --remote
-  - name: packages
+  - name: build-pkgs
     image: alpine
     commands:
     - apk add bash jq patch
     - apk add yq docker-cli --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+    - |-
+      mkdir -p ~/.docker/cli-plugins &&
+      wget -O docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64 &&
+      chmod +x ~/.docker/cli-plugins/docker-build
     - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
     - scripts/build-pkgs.sh
 ---
