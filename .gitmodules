@@ -1,0 +1,3 @@
+[submodule "linuxkit"]
+	path = linuxkit
+	url = https://github.com/linuxkit/linuxkit
