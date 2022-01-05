@@ -33,7 +33,7 @@ A few patches to cross-build for arm32 (we are using binfmt_misc with qemu)
     cp packages.{aarch64,armv7l} &&
     DOCKER_DEFAULT_PLATFORM=linux/arm/v7 ARCH=armv7l make build
 )
-export IMAGE_ORG="dockerregistry.lab.khoobyar.lan/linuxkit
+export IMAGE_ORG="dockerregistry.lab.khoobyar.lan/linuxkit"
 export IMAGE_HASH="$(cat linuxkit/tools/alpine/hash)" 
 export ALPINE_BASE="$IMAGE_ORG/alpine:$IMAGE_HASH"
 docker tag "linuxkit/alpine:$IMAGE_HASH" "$ALPINE_BASE"
@@ -44,7 +44,7 @@ docker tag "linuxkit/alpine:$IMAGE_HASH" "$ALPINE_BASE"
 ```
 (
     cd linuxkit &&
-    patch -lN -p1 -i ../patches/linuxkit-pkg-init-arm32v7.patch || true &&
+    patch -lN -p1 -i ../patches/linuxkit-pkg-init-armv7l.patch || true &&
     cd pkg/init &&
     sed -e 's@FROM linuxkit/alpine:.* AS@FROM '"$ALPINE_BASE"' AS@g' -i~ Dockerfile && rm -f Dockerfile~ &&
     DOCKER_DEFAULT_PLATFORM=linux/arm/v7 docker build -t "$IMAGE_ORG/init:$IMAGE_HASH" .
