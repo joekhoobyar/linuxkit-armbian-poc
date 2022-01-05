@@ -1,0 +1,31 @@
+---
+kind: pipeline
+type: kubernetes
+name: linuxkit-armbian/pkgs
+
+clone:
+  skip_verify: true
+
+steps:
+  - name: submodules
+    image: alpine/git
+    commands:
+    - git submodule init
+    - git submodule update --recursive --remote
+  - name: packages
+    image: alpine
+    commands:
+    - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
+    - scripts/build-pkgs.sh
+---
+kind: secret
+name: dockerhub_username
+get:
+  path: docker-registry-dockerhub
+  name: username
+---
+kind: secret
+name: dockerhub_password
+get:
+  path: docker-registry-dockerhub
+  name: password

@@ -38,3 +38,4 @@ docker build --progress plain \
     -f Dockerfile.armbian \
     --no-cache \
     --build-arg DEB_URLS="${DEB_URLS}" .
+docker push "${REPO}:${BOARD}-${VER1}-${VER2}"

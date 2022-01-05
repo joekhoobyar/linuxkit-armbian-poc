@@ -22,7 +22,8 @@ export ARCH DOCKER_DEFAULT_PLATFORM
     make build
 )
 
-IMAGE_ORG="dockerregistry.lab.khoobyar.lan/linuxkit"
+IMAGE_ORG="joekhoobyar"
 IMAGE_HASH="$(cat linuxkit/tools/alpine/hash)" 
-ALPINE_BASE="$IMAGE_ORG/alpine:$IMAGE_HASH"
+ALPINE_BASE="$IMAGE_ORG/linuxkit-alpine:${IMAGE_HASH%-*}-$ARCH"
 docker tag "linuxkit/alpine:$IMAGE_HASH" "$ALPINE_BASE"
+docker push "$ALPINE_BASE"
