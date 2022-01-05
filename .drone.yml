@@ -15,6 +15,7 @@ steps:
   - name: packages
     image: alpine
     commands:
+    - apk add bash
     - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
     - scripts/build-pkgs.sh
 ---
