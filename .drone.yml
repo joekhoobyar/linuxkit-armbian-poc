@@ -16,7 +16,7 @@ steps:
     image: alpine
     commands:
     - apk add bash jq patch
-    - apk add yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+    - apk add yq docker-cli --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
     - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
     - scripts/build-pkgs.sh
 ---
