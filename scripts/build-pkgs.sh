@@ -11,7 +11,7 @@ IMAGE_HASH="$(cat linuxkit/tools/alpine/hash)"
 IMAGE_HASH="${IMAGE_HASH%-*}"
 ALPINE_BASE="$IMAGE_REPO:$IMAGE_HASH-$ARCH"
 
-PACKAGES=( init runc containerd ca-certificates sysctl dhcpcd getty rngd )
+PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd )
 
 for pkg in "${PACKAGES[@]}"
 do (
