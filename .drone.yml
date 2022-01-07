@@ -24,7 +24,7 @@ steps:
     - echo $ALPINE_BASE >linuxkit/tools/alpine/hash
     - /entrypoint.sh scripts/build-pkgs.sh
     environment:
-      ALPINE_BASE: dockerregistry.lab.khoobyar.lan/linuxkit/alpine:ce6241324784b1c6581347cf213def47519205f9-armv7l
+      ALPINE_BASE: ce6241324784b1c6581347cf213def47519205f9-armv7l
       BUILDX_INSTANCE:
         from_secret: buildx_instance
       DOCKER_CONFIGJSON:
