@@ -8,6 +8,10 @@ clone:
 
 steps:
   - name: git submodules
+    image: alpine
+    commands:
+    - chown -R 1000:1000 /drone/src
+  - name: git submodules
     image: dockerregistry.lab.khoobyar.lan/builder
     commands:
     - whoami
