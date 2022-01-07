@@ -2,7 +2,7 @@
 
 : ${BOARD="odroidxu4"}
 : ${LINUX_DOCKER_ARCH="arm/v7"}
-: ${IMAGE_REPO="joekhoobyar/linuxkit-kernel"}
+: ${IMAGE_REPO="dockerregistry.lab.khoobyar.lan/linuxkit/kernel"}
 : ${KERNEL_VERSION="5.4.160"}
 : ${ARMBIAN_UBUNTU_VERSION="21.08.6"}
 

@@ -13,26 +13,28 @@ steps:
     - git submodule init
     - git submodule update --recursive --remote
   - name: build-pkgs
-    image: alpine
+    image: dockerregistry.lab.khoobyar.lan/builder
+    pull: always
     commands:
-    - apk add bash jq patch
-    - apk add yq docker-cli --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-    - |-
-      dir=~/.docker/cli-plugins
-      mkdir -p $dir &&
-      wget -O $dir/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64 &&
-      chmod +x $dir/docker-buildx
-    - echo 'ce6241324784b1c6581347cf213def47519205f9-arm' >linuxkit/tools/alpine/hash
-    - DOCKER_HOST='tcp://dind:2376' scripts/build-pkgs.sh
+    - mkdir -p linuxkit/tools/alpine
+    - echo $ALPINE_BASE >linuxkit/tools/alpine/hash
+    - /entrypoint.sh scripts/build-pkgs.sh
+    environment:
+      ALPINE_BASE: dockerregistry.lab.khoobyar.lan/linuxkit/alpine:ce6241324784b1c6581347cf213def47519205f9-armv7l
+      BUILDX_INSTANCE:
+        from_secret: buildx_instance
+      DOCKER_CONFIGJSON:
+        from_secret: docker_configjson
 ---
 kind: secret
-name: dockerhub_username
+name: docker_configjson
 get:
-  path: docker-registry-dockerhub
-  name: username
+  path: builder-env
+  name: config.json
 ---
 kind: secret
-name: dockerhub_password
+name: buildx_instance
 get:
-  path: docker-registry-dockerhub
-  name: password
+  path: builder-env
+  name: buildx-instance
+
