@@ -25,6 +25,7 @@ steps:
     - /entrypoint.sh scripts/build-pkgs.sh
     environment:
       ALPINE_BASE: ce6241324784b1c6581347cf213def47519205f9-armv7l
+      DOCKER_HOST: tcp://dind:2376
       BUILDX_INSTANCE:
         from_secret: buildx_instance
       DOCKER_CONFIGJSON:
