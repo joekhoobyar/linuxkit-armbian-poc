@@ -14,8 +14,6 @@ steps:
   - name: git submodules
     image: dockerregistry.lab.khoobyar.lan/builder
     commands:
-    - whoami
-    - ls -l .git
     - git submodule init
     - git submodule update --recursive --remote
   - name: build-pkgs

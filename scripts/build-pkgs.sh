@@ -11,7 +11,6 @@ IMAGE_HASH="$(cat linuxkit/tools/alpine/hash)"
 IMAGE_HASH="${IMAGE_HASH%-*}"
 ALPINE_BASE="$IMAGE_REPO:$IMAGE_HASH-$ARCH"
 
-# PACKAGES=( sysctl )
 PACKAGES=( init runc containerd ca-certificates sysctl dhcpcd getty rngd )
 
 for pkg in "${PACKAGES[@]}"
@@ -33,15 +32,15 @@ do (
   # Attempt to configure the build.
   buildx_args=( \
     --platform "$DOCKER_DEFAULT_PLATFORM" \
-    -t "$IMAGE_ORG/linuxkit-$pkg:$IMAGE_HASH-$ARCH" \
+    -t "$IMAGE_ORG/$pkg:$IMAGE_HASH-$ARCH" \
     --label=org.mobyproject.linuxkit.version="unknown" \
     --label=org.mobyproject.linuxkit.revision="unknown" \
   )
-  network="$(yq .network <build.yml | jq -r .)"
+  network="$(yq -o json eval <build.yml | jq -r .network)"
   if [ "$network" = "null" ] || [ "$network" = "false" ]; then
     buildx_args=( "${buildx_args[@]}" --network=none )
   fi
-  moby_config="$(yq .config <build.yml | jq .)"
+  moby_config="$(yq -o json eval <build.yml | jq .config)"
   if [ "$moby_config" != "null" ]; then
     buildx_args=( "${buildx_args[@]}" --label=org.mobyproject.config="$moby_config" )
   fi
