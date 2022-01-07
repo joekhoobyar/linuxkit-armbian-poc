@@ -7,7 +7,7 @@ clone:
   skip_verify: true
 
 steps:
-  - name: git submodules
+  - name: chown
     image: alpine
     commands:
     - chown -R 1000:1000 /drone/src
