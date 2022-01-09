@@ -12,6 +12,8 @@ IMAGE_ORG="dockerregistry.lab.khoobyar.lan/linuxkit"
 ALPINE_REPO="$IMAGE_ORG/alpine"
 export IMAGE_ORG ALPINE_REPO
 
+: ${BUILDX_ARGS=}
+
 # The init package build hangs when using buildkitd's qemu-system-arm.
 DEFAULT_PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd )
 

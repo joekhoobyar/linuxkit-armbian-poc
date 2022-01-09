@@ -45,7 +45,7 @@ linuxkit_alpine_build() {
     cp packages.{aarch64,armv7l}
 
     # Use buildx to "pre build" the image, then run the rest of the build.
-	  docker buildx build --no-cache --iidfile iid --platform "$DOCKER_PLATFORM" --load .
+	  docker buildx build ${BUILDX_ARGS:-} --iidfile iid --platform "$DOCKER_PLATFORM" --load .
     DOCKER_DEFAULT_PLATFORM="$DOCKER_PLATFORM" make build
 
     ALPINE_HASH="$(cat ./hash)" 
@@ -85,7 +85,7 @@ linuxkit_pkg_build() {
     # Attempt to configure the build.
     buildx_args=( \
       --platform "$DOCKER_PLATFORM" \
-      -t "$IMAGE_ORG/$pkg:$IMAGE_HASH-$ARCH" \
+      -t "$IMAGE_ORG/$pkg:$ALPINE_HASH-$ARCH" \
       --label=org.mobyproject.linuxkit.version="unknown" \
       --label=org.mobyproject.linuxkit.revision="unknown" \
     )
@@ -101,7 +101,7 @@ linuxkit_pkg_build() {
     # Attempt to build and push image
     out "$pkg: building ..."
     cd ..
-    docker buildx build "${buildx_args[@]}" --no-cache --push "$pkg"
+    docker buildx build ${BUILDX_ARGS:-} "${buildx_args[@]}" --push "$pkg"
     out "$pkg: built"
   )
 }
