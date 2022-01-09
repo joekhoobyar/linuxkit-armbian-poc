@@ -17,6 +17,9 @@ DEFAULT_PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd )
 
 cmd="$1" ; shift
 case "$cmd" in
+import-kernel)
+  import-kernel-$BOARD
+  ;;
 base)
   linuxkit_alpine_build
   ;;

@@ -4,14 +4,48 @@ out() { echo "$0:" "$@" ; }
 err() { out "$@" 1>&2 ; }
 die() { err "$@" ; exit 1 ; }
 
+armbian-import-kernel() {
+  local version="$1"
+  local release="$2"
+  local base_url="https://armbian.hosthatch.com/apt/pool/main/l"
+
+  kernel_deb="$base_url/linux-${version}-${BOARD}/linux-image-current-${BOARD}_${release}_${DEB_ARCH}.deb"
+  kernel_dtb_deb="${base_url}/linux-${version}-${BOARD}/linux-dtb-current-${BOARD}_${release}_${DEB_ARCH}.deb"
+  headers_deb="$base_url/linux-${version}-${BOARD}/linux-headers-current-${BOARD}_${release}_${DEB_ARCH}.deb"
+  uboot_deb="${base_url}/linux-u-boot-${BOARD}-current/linux-u-boot-current-${BOARD}_${release}_${DEB_ARCH}.deb"
+
+  debian-import-kernel "$BOARD" "$version-$release" "${kernel_deb} ${kernel_dtb_deb} ${headers_deb} ${uboot_deb}"
+}
+
+debian-import-kernel() {
+  local board="$1" version="$2" deb_urls="$3"
+  local image_tag="${IMAGE_ORG}/kernel:${board}-${version}"
+
+  (
+    set -eu
+
+    cd scripts/kernel-import
+
+    docker build --progress plain --platform "$DOCKER_PLATFORM" --no-cache \
+      --build-arg DEB_URLS="${deb_urls}" -t "$image_tag" -f Dockerfile.debian .
+
+    docker push "${image_tag}"
+  )
+}
+
 linuxkit_alpine_build() {
   (
     set -eu
 
     cd linuxkit/tools/alpine
+
+    # Patches for the build - and 32-bit arm support.
     sed -e 's/^ARCH := /ARCH?=/g' -i~ Makefile && rm -f Makefile~
     sed -e '/zfs/d' -i~ packages && rm -f packages~
     cp packages.{aarch64,armv7l}
+
+    # Use buildx to "pre build" the image, then run the rest of the build.
+	  docker buildx build --no-cache --iidfile iid --platform "$DOCKER_PLATFORM" --load .
     DOCKER_DEFAULT_PLATFORM="$DOCKER_PLATFORM" make build
 
     ALPINE_HASH="$(cat ./hash)" 
