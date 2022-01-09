@@ -16,16 +16,22 @@ steps:
     commands:
     - git submodule init
     - git submodule update --recursive --remote
+  - name: build-base
+    image: dockerregistry.lab.khoobyar.lan/builder
+    pull: always
+    commands:
+    - /entrypoint.sh scripts/build.sh base
+    environment:
+      BUILDX_INSTANCE:
+        from_secret: buildx_instance
+      DOCKER_CONFIGJSON:
+        from_secret: docker_configjson
   - name: build-pkgs
     image: dockerregistry.lab.khoobyar.lan/builder
     pull: always
     commands:
-    - mkdir -p linuxkit/tools/alpine
-    - echo $ALPINE_BASE >linuxkit/tools/alpine/hash
-    - /entrypoint.sh scripts/build-pkgs.sh
+    - /entrypoint.sh scripts/build.sh all-pkg
     environment:
-      ALPINE_BASE: ce6241324784b1c6581347cf213def47519205f9-armv7l
-      DOCKER_HOST: tcp://dind:2376
       BUILDX_INSTANCE:
         from_secret: buildx_instance
       DOCKER_CONFIGJSON:
