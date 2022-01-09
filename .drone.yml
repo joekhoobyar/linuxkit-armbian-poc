@@ -20,7 +20,6 @@ steps:
     image: dockerregistry.lab.khoobyar.lan/builder
     pull: always
     commands:
-    - ls -l linuxkit/tools
     - /entrypoint.sh scripts/build.sh base
     environment:
       DOCKER_HOST: tcp://dind:2376
