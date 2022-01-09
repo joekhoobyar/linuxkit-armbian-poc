@@ -15,7 +15,7 @@ export IMAGE_ORG ALPINE_REPO
 : ${BUILDX_ARGS=}
 
 # The init package build hangs when using buildkitd's qemu-system-arm.
-DEFAULT_PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd )
+DEFAULT_PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd sshd )
 
 cmd="$1" ; shift
 case "$cmd" in
