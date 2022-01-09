@@ -23,6 +23,7 @@ steps:
     - ls -l linuxkit/tools
     - /entrypoint.sh scripts/build.sh base
     environment:
+      DOCKER_BUILDKIT: 1
       BUILDX_INSTANCE:
         from_secret: buildx_instance
       DOCKER_CONFIGJSON:
