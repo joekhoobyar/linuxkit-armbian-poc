@@ -9,11 +9,8 @@ export BOARD
 source scripts/_boards.sh
 
 IMAGE_ORG="dockerregistry.lab.khoobyar.lan/linuxkit"
-IMAGE_REPO="$IMAGE_ORG/alpine"
-IMAGE_HASH="$(cat linuxkit/tools/alpine/hash)" 
-IMAGE_HASH="${IMAGE_HASH%-*}"
-ALPINE_BASE="$IMAGE_REPO:$IMAGE_HASH-$ARCHX"
-export IMAGE_ORG IMAGE_REPO IMAGE_HASH ALPINE_BASE
+ALPINE_REPO="$IMAGE_ORG/alpine"
+export IMAGE_ORG ALPINE_REPO
 
 # The init package build hangs when using buildkitd's qemu-system-arm.
 DEFAULT_PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd )

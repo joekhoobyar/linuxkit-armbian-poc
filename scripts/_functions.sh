@@ -6,13 +6,19 @@ die() { err "$@" ; exit 1 ; }
 
 linuxkit_alpine_build() {
   (
-    cd linuxkit/tools/alpine &&
-    sed -e 's/^ARCH := /ARCH?=/g' -i~ Makefile && rm -f Makefile~ &&
-    sed -e '/zfs/d' -i~ packages && rm -f packages~ &&
-    cp packages.{aarch64,armv7l} &&
-    DOCKER_DEFAULT_PLATFORM="$DOCKER_PLATFORM" make build &&
-    docker tag "linuxkit/alpine:$IMAGE_HASH" "$ALPINE_BASE"
-    docker push "$ALPINE_BASE" &&
+    set -eu
+
+    cd linuxkit/tools/alpine
+    sed -e 's/^ARCH := /ARCH?=/g' -i~ Makefile && rm -f Makefile~
+    sed -e '/zfs/d' -i~ packages && rm -f packages~
+    cp packages.{aarch64,armv7l}
+    DOCKER_DEFAULT_PLATFORM="$DOCKER_PLATFORM" make build
+
+    ALPINE_HASH="$(cat ./hash)" 
+    ALPINE_BASE="$ALPINE_REPO:${ALPINE_HASH%-*}-$ARCHX"
+
+    docker tag "linuxkit/alpine:$ALPINE_HASH" "$ALPINE_BASE"
+    docker push "$ALPINE_BASE"
     echo "$ALPINE_BASE" >./hash
   )
 }
@@ -20,6 +26,10 @@ linuxkit_alpine_build() {
 # Emulates: linuxkit pkg build (due to lack of arm support)
 linuxkit_pkg_build() {
   local pkg="$1"
+
+  ALPINE_HASH="$(cat linuxkit/tools/alpine/hash)" 
+  ALPINE_HASH="${ALPINE_HASH%-*}"
+  ALPINE_BASE="$ALPINE_REPO:$ALPINE_HASH-$ARCHX"
 
   (
     set -eu
