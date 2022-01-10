@@ -8,7 +8,7 @@ source scripts/_functions.sh
 export BOARD
 source scripts/_boards.sh
 
-IMAGE_ORG="dockerregistry.lab.khoobyar.lan/linuxkit"
+IMAGE_ORG="harbor.lab.khoobyar.lan/linuxkit"
 ALPINE_REPO="$IMAGE_ORG/alpine"
 export IMAGE_ORG ALPINE_REPO
 
