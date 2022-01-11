@@ -12,12 +12,12 @@ steps:
     commands:
     - chown -R 1000:1000 /drone/src
   - name: git submodules
-    image: dockerregistry.lab.khoobyar.lan/builder/default
+    image: harbor.lab.khoobyar.lan/builder/default
     commands:
     - git submodule init
     - git submodule update --recursive --remote
   - name: build-base
-    image: dockerregistry.lab.khoobyar.lan/builder/default
+    image: harbor.lab.khoobyar.lan/builder/default
     pull: always
     commands:
     - /entrypoint.sh scripts/build.sh base
@@ -28,7 +28,7 @@ steps:
       DOCKER_CONFIGJSON:
         from_secret: docker_configjson
   - name: build-pkgs
-    image: dockerregistry.lab.khoobyar.lan/builder/default
+    image: harbor.lab.khoobyar.lan/builder/default
     pull: always
     commands:
     - /entrypoint.sh scripts/build.sh all-pkg
