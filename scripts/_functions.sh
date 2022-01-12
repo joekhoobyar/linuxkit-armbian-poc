@@ -44,17 +44,13 @@ linuxkit_alpine_build() {
     sed -e '/zfs/d' -i~ packages && rm -f packages~
     cp packages.{aarch64,armv7l}
 
-    # Use buildx to "pre build" the image, then run the rest of the build.
-	  docker buildx build ${BUILDX_ARGS:-} -t "$ALPINE_REPO:latest" --platform "$DOCKER_PLATFORM" --push .
-	  docker pull "$ALPINE_REPO:latest"
-    echo "$ALPINE_REPO:latest" >iid
-    DOCKER_DEFAULT_PLATFORM="$DOCKER_PLATFORM" make build
+    # Use buildx to to build the image.
+    hash="$(git rev-parse HEAD)-${ARCHX}"
+	  docker buildx build ${BUILDX_ARGS:-} -t "$ALPINE_REPO:${hash}" --platform "$DOCKER_PLATFORM" --push .
 
-    ALPINE_HASH="$(cat ./hash)" 
-    ALPINE_BASE="$ALPINE_REPO:${ALPINE_HASH%-*}-$ARCHX"
-
-    docker tag "linuxkit/alpine:$ALPINE_HASH" "$ALPINE_BASE"
-    docker push "$ALPINE_BASE"
+    # Get the built hash
+    ALPINE_BASE="$ALPINE_REPO:$hash"
+    echo "$ALPINE_BASE" >./iid
     echo "$ALPINE_BASE" >./hash
   )
 }
