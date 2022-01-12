@@ -51,7 +51,7 @@ linuxkit_alpine_build() {
     # Get the built hash
     ALPINE_BASE="$ALPINE_REPO:$hash"
     echo "$ALPINE_BASE" >./iid
-    echo "$ALPINE_BASE" >./hash
+    echo "$hash" >./hash
   )
 }
 
