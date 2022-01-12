@@ -45,7 +45,9 @@ linuxkit_alpine_build() {
     cp packages.{aarch64,armv7l}
 
     # Use buildx to "pre build" the image, then run the rest of the build.
-	  docker buildx build ${BUILDX_ARGS:-} --iidfile iid --platform "$DOCKER_PLATFORM" --load .
+	  docker buildx build ${BUILDX_ARGS:-} -t "$ALPINE_REPO:latest" --platform "$DOCKER_PLATFORM" --push .
+	  docker pull "$ALPINE_REPO:latest"
+    echo "$ALPINE_REPO:latest" >iid
     DOCKER_DEFAULT_PLATFORM="$DOCKER_PLATFORM" make build
 
     ALPINE_HASH="$(cat ./hash)" 
