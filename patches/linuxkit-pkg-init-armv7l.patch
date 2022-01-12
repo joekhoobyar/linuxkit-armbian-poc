@@ -1,6 +1,6 @@
-diff a/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go b/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
---- a/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
-+++ b/pkg/init/cmd/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
+diff a/pkg/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go b/pkg/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
+--- a/pkg/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
++++ b/pkg/init/vendor/golang.org/x/sys/unix/ztypes_linux_arm.go
 @@ -118,7 +118,7 @@ type Stat_t struct {
  }
  
