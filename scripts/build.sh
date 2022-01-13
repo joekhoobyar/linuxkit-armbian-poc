@@ -15,7 +15,7 @@ export IMAGE_ORG ALPINE_REPO
 : ${BUILDX_ARGS=}
 
 # The init package build hangs when using buildkitd's qemu-system-arm.
-DEFAULT_PACKAGES=( runc containerd ca-certificates sysctl dhcpcd getty rngd sshd )
+DEFAULT_PACKAGES=( init runc containerd ca-certificates sysctl dhcpcd getty rngd sshd )
 
 cmd="$1" ; shift
 case "$cmd" in
@@ -34,7 +34,12 @@ all-pkg)
   do linuxkit_pkg_build "$pkg"
   done
   ;;
+example)
+  (mkdir -p target &&
+    cd target && 
+    linuxkit build -arch ${ARCH} -docker -format kernel+initrd -name linuxkit-${BOARD} ../examples/${BOARD}.yml)
+  ;;
 *)
-  die 'invalid command'
+  die 'invalid command:' "$@"
   ;;
 esac

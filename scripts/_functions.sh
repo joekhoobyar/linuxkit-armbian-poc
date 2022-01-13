@@ -83,7 +83,7 @@ linuxkit_pkg_build() {
     # Attempt to configure the build.
     buildx_args=( \
       --platform "$DOCKER_PLATFORM" \
-      -t "$IMAGE_ORG/$pkg:$ALPINE_HASH-$ARCH" \
+      -t "$IMAGE_ORG/$pkg:$ALPINE_HASH-$ARCHX" \
       --label=org.mobyproject.linuxkit.version="unknown" \
       --label=org.mobyproject.linuxkit.revision="unknown" \
     )
