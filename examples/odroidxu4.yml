@@ -2,18 +2,18 @@ kernel:
   image: harbor.lab.khoobyar.lan/linuxkit/kernel:odroidxu4-5.4.160-21.08.6
   cmdline: "console=tty0 console=ttyS0 console=ttyAMA0"
 init:
-  - harbor.lab.khoobyar.lan/linuxkit/init:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
-  - harbor.lab.khoobyar.lan/linuxkit/runc:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
-  - harbor.lab.khoobyar.lan/linuxkit/containerd:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
-  - harbor.lab.khoobyar.lan/linuxkit/ca-certificates:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+  - harbor.lab.khoobyar.lan/linuxkit/init:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
+  - harbor.lab.khoobyar.lan/linuxkit/runc:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
+  - harbor.lab.khoobyar.lan/linuxkit/containerd:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
+  - harbor.lab.khoobyar.lan/linuxkit/ca-certificates:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
 onboot:
   - name: sysctl
-    image: harbor.lab.khoobyar.lan/linuxkit/sysctl:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+    image: harbor.lab.khoobyar.lan/linuxkit/sysctl:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
   - name: rngd1
-    image: harbor.lab.khoobyar.lan/linuxkit/rngd:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+    image: harbor.lab.khoobyar.lan/linuxkit/rngd:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
     command: ["/sbin/rngd", "-1"]
   - name: dhcpcd
-    image: harbor.lab.khoobyar.lan/linuxkit/dhcpcd:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+    image: harbor.lab.khoobyar.lan/linuxkit/dhcpcd:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
     command: ["/sbin/dhcpcd", "--nobackground", "-f", "/dhcpcd.conf", "-1"]
 onshutdown:
   - name: shutdown
@@ -21,13 +21,13 @@ onshutdown:
     command: ["/bin/echo", "so long and thanks for all the fish"]
 services:
   - name: getty
-    image: harbor.lab.khoobyar.lan/linuxkit/getty:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+    image: harbor.lab.khoobyar.lan/linuxkit/getty:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
     env:
      - INSECURE=true
   - name: rngd
-    image: harbor.lab.khoobyar.lan/linuxkit/rngd:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+    image: harbor.lab.khoobyar.lan/linuxkit/rngd:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
   - name: sshd
-    image: harbor.lab.khoobyar.lan/linuxkit/sshd:31ea2b60a650cd3e270d42ffe864e3b70403934e-armv7l
+    image: harbor.lab.khoobyar.lan/linuxkit/sshd:c1d8f8b05ba39e8edd62c0d5be70c4af41d29c4d-armv7l
 files:
   - path: root/.ssh/authorized_keys
     source: ~/.ssh/id_ecdsa.pub

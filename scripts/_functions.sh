@@ -60,7 +60,7 @@ linuxkit_alpine_build() {
     cp packages.{aarch64,armv7l}
 
     # Use buildx to to build the image.
-    hash="$(git rev-parse HEAD)-${ARCHX}"
+    hash="$(cd ../../.. && git rev-parse HEAD)-${ARCHX}"
     buildx-build alpine "$hash" --push .
 
     # Output information about the image
