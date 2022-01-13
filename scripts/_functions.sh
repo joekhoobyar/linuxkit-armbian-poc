@@ -7,7 +7,7 @@ die() { err "$@" ; exit 1 ; }
 buildx-build() {
   local name="$1" tag="$2" buildx_args ; shift ; shift
   local current_tag="$IMAGE_ORG/$name:$tag"
-  local latest_tag="$IMAGE_ORG/$name:latest"
+  local latest_tag="$IMAGE_ORG/$name:latest-${ARCHX}"
 
   buildx_args=( --platform "$DOCKER_PLATFORM" -t "$latest_tag" -t "$current_tag" "$@" )
 
