@@ -4,6 +4,21 @@ out() { echo "$0:" "$@" ; }
 err() { out "$@" 1>&2 ; }
 die() { err "$@" ; exit 1 ; }
 
+buildx-build() {
+  local name="$1" tag="$2" buildx_args ; shift ; shift
+
+  buildx_args=( --platform "$DOCKER_PLATFORM" -t "$IMAGE_ORG/$name:$tag" "$@" )
+
+  if [ -z "${DISABLE_CACHE:-}" ]; then
+    import_target="type=registry,ref=$IMAGE_ORG/$name:$tag"
+    export_target="type=inline"
+    buildx_args=( --cache-from="$import_target" --cache-to="$export_target" "${buildx_args[@]}" )
+  fi
+
+  out "$pkg: docker buildx build" "${buildx_args[@]}"
+  docker buildx build "${buildx_args[@]}"
+}
+
 armbian-import-kernel() {
   local version="$1"
   local release="$2"
@@ -46,11 +61,10 @@ linuxkit_alpine_build() {
 
     # Use buildx to to build the image.
     hash="$(git rev-parse HEAD)-${ARCHX}"
-	  docker buildx build ${BUILDX_ARGS:-} -t "$ALPINE_REPO:${hash}" --platform "$DOCKER_PLATFORM" --push .
+    buildx-build alpine "$hash" --push .
 
-    # Get the built hash
-    ALPINE_BASE="$ALPINE_REPO:$hash"
-    echo "$ALPINE_BASE" >./iid
+    # Output information about the image
+    echo "$ALPINE_REPO:$hash" >./iid
     echo "$hash" >./hash
   )
 }
@@ -59,9 +73,8 @@ linuxkit_alpine_build() {
 linuxkit_pkg_build() {
   local pkg="$1"
 
-  ALPINE_HASH="$(cat linuxkit/tools/alpine/hash)" 
-  ALPINE_HASH="${ALPINE_HASH%-*}"
-  ALPINE_BASE="$ALPINE_REPO:$ALPINE_HASH-$ARCHX"
+  hash="$(cat linuxkit/tools/alpine/hash)" 
+  ALPINE_BASE="$ALPINE_REPO:$hash"
 
   (
     set -eu
@@ -82,8 +95,6 @@ linuxkit_pkg_build() {
 
     # Attempt to configure the build.
     buildx_args=( \
-      --platform "$DOCKER_PLATFORM" \
-      -t "$IMAGE_ORG/$pkg:$ALPINE_HASH-$ARCHX" \
       --label=org.mobyproject.linuxkit.version="unknown" \
       --label=org.mobyproject.linuxkit.revision="unknown" \
     )
@@ -99,7 +110,7 @@ linuxkit_pkg_build() {
     # Attempt to build and push image
     out "$pkg: building ..."
     cd ..
-    docker buildx build ${BUILDX_ARGS:-} "${buildx_args[@]}" --push "$pkg"
+    buildx-build "$pkg" "$hash" ${BUILDX_ARGS:-} "${buildx_args[@]}" --push "$pkg"
     out "$pkg: built"
   )
 }
@@ -107,6 +118,6 @@ linuxkit_pkg_build() {
 linuxkit_build() {
   (
     cd target && 
-    linuxkit build -arch arm -docker -format kernel+initrd -name linuxkit-$BOARD ../$BOARD.yml
+    linuxkit build -arch "$ARCH" -docker -format kernel+initrd -name "linuxkit-$BOARD" "../$BOARD.yml"
   )
 }
