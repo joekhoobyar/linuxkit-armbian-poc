@@ -2,7 +2,7 @@ kernel:
   image: harbor.lab.khoobyar.lan/linuxkit/kernel:vexpress-a15-5.4.0-92.103
   cmdline: "console=tty0 console=ttyS0 console=ttyAMA0"
 init:
-  - harbor.lab.khoobyar.lan/linuxkit/init:ce6241324784b1c6581347cf213def47519205f9-armv7l
+  - harbor.lab.khoobyar.lan/linuxkit/init:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
   - harbor.lab.khoobyar.lan/linuxkit/runc:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
   - harbor.lab.khoobyar.lan/linuxkit/containerd:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
   - harbor.lab.khoobyar.lan/linuxkit/ca-certificates:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
@@ -20,10 +20,10 @@ onshutdown:
     image: busybox:latest
     command: ["/bin/echo", "so long and thanks for all the fish"]
 services:
-  - name: getty
-    image: harbor.lab.khoobyar.lan/linuxkit/getty:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
-    env:
-     - INSECURE=true
+#  - name: getty
+#    image: harbor.lab.khoobyar.lan/linuxkit/getty:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
+#    env:
+#     - INSECURE=true
   - name: rngd
     image: harbor.lab.khoobyar.lan/linuxkit/rngd:951a58cf060709c55bb3aad3e6d94fd7cb2549a4-armv7l
   - name: sshd
