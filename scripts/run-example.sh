@@ -35,4 +35,3 @@ prefix="linuxkit-${BOARD}"
     # -device virtio-rng-pci
     # -net nic,model=virtio,macaddr=16:da:11:b4:44:c9
 )
-
