@@ -83,8 +83,13 @@ linuxkit_pkg_build() {
 
     # Attempt to apply a patch
     out "$pkg: patching ..."
-    patch="../patches/linuxkit-pkg-$pkg-$ARCHX.patch"
-    if [ -f "$patch" ]; then patch -lN -p1 -i "$patch" || true ; fi
+    for _arch in $ARCHX all
+    do
+      patch="../patches/linuxkit-pkg-$pkg-$_arch.patch"
+      if [ -f "$patch" ]; then
+        patch -lN -p1 -i "$patch" || out "$patch: failed - continuing anyway"
+      fi
+    done
     out "$pkg: patched"
 
     # Attempt to "reparent" the image
