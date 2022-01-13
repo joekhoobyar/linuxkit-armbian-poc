@@ -15,7 +15,7 @@ buildx-build() {
     buildx_args=( --cache-from="$import_target" --cache-to="$export_target" "${buildx_args[@]}" )
   fi
 
-  out "$pkg: docker buildx build" "${buildx_args[@]}"
+  out "$name: docker buildx build" "${buildx_args[@]}"
   docker buildx build "${buildx_args[@]}"
 }
 
