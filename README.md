@@ -36,7 +36,7 @@ scripts/build.sh import-kernel odroid-xu4
 ## Base dependencies
 
 ```
-scripts/build.sh basee
+scripts/build.sh base
 ```
 
 ## All packages
