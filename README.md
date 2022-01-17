@@ -1,11 +1,17 @@
-# End Goals
+# Summary
 
-A 32-bit ARM build for linuxkit, capable of being used with tinkerbell's hook.  So we can do "Metal-as-a-service" with Armbian systems.
+## Target Goal
 
-# Prequisites
+A 32-bit ARM build for [linuxkit](https://github.com/linuxkit/linuxkit), capable of being used with [tinkerbell]()'s [hook](https://github.com/tinkerbell/hook).  So we can do "Metal-as-a-service" with Armbian systems.
+
+## Current status
+
+ - 32-bit ARM build of linuxkit able to build and boot in qmeu (vexpress-a15)
+
+# Prerequisites
 
 - docker-buildx plugin for docker is needed.
-- you a running buildkitd that can target arm32
+- a running buildkitd that can target arm32
 
 # Building
 
